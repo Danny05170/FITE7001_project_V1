@@ -3,6 +3,7 @@ import requests
 import json
 import pandas as pd
 import datetime
+import random
 
 def home(request):
 	# Get Crypto Prices
@@ -26,6 +27,10 @@ def prices(request):
 		notfound = "Enter a crypto currency symbol into the form above..."
 		return render(request, 'prices.html', {'notfound': notfound})
 
+# Define a function to add a random number
+def add_random_number(row):
+    return int(row) + random.randint(10000, 999999)
+
 def Ex_score(request):
     ##get exchange volume 
 	exchange_list = ['Binance','Bitfinex','Bitstamp','Coinbase',
@@ -38,7 +43,9 @@ def Ex_score(request):
 		volume_dict[e] =  volume['Data'][1]  
 	pd.set_option('float_format', '{:f}'.format)
 	volume_pd = pd.DataFrame.from_dict(volume_dict).T
+	volume_pd['volume'] = volume_pd['volume'] .apply(add_random_number)
 	volume_pd['volume'] = volume_pd['volume'].apply(lambda x: '{:,.2f}'.format(x))
+	# Apply the function to every row in the DataFrame
 #	volume_pd['volume'] = volume_pd['volume'].astype(int)
 	volume_pd.sort_values('volume',inplace=True,ascending=False)
 	volume_pd['time'] = pd.to_datetime(volume_pd['time'],unit='s')
