@@ -1,0 +1,8 @@
+<html>
+  <body>
+    <div id="btc" hx-get="{% url 'score' %}" hx-trigger="every 1800s" hx-swap="innerHTML">     
+     {% include 'score_data.html' %}
+    </div>
+  </body>
+  <script src="https://unpkg.com/htmx.org@1.6.1"></script>
+</html>
